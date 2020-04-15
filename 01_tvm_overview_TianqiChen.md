@@ -3,3 +3,6 @@
 
 ## Problem: Run deep learning everywhere
 - ![Problem](asserts/problem-run-dl-everywhere.png)
+- For now, how I start to work on this problem ?
+  - We need Machine Learning Reseacher, System Researcher and Computer Architect to work together.
+  - ![key problems](asserts/key_problems.png)
