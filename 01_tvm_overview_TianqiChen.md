@@ -20,8 +20,12 @@
   
 ## 分析现状
 - 现在的模型训练和模型部署的硬件之间存在非常大的gap。
-- ![deploy dl model everywhere](asserts/01-deploy-dl-model-everywhere.png)
-- 我们现在能做到的。
-- ![existing dl model ](asserts/01-existing-dl-framworks.png)
+  - ![deploy dl model everywhere](asserts/01-deploy-dl-model-everywhere.png)
+- 我们现在能做到的，目前支持大多数的是英伟达的显卡。
+  - ![existing dl model ](asserts/01-existing-dl-framworks.png)
+- 现在的方案存在的困难
+  - ![problem](asserts/01-existing-dl-frameworks-problem.png)
+  - 上层框架中的算子是数据图数据，我们要在底层的GPU中对上层的算子，如二维卷积进行加速优化，这样才能加速上层模型的训练。每增加一个新的算子，我们都要在底层的GPU中实现一个对应的加速操作。然而，当我们希望泡在不同的硬件上，如开发板或者手机等边缘设备，我们需要对应的工程师进行对接新的加速实现。这是和等的麻烦啊。
+  - ![limitation of existing approach](asserts/01-limitations-of-existing-approcach.png)
 
   
