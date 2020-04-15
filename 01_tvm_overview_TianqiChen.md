@@ -13,16 +13,16 @@
   - ![deploy dl model everywhere](asserts/01-deploy-dl-model-everywhere.png)
 - 我们现在能做到的，目前支持大多数的是英伟达的显卡。
   - ![existing dl model ](asserts/01-existing-dl-framworks.png)
+- Current System
+  - 现时的做法是我们先优化底层的系统层，然后令系统层赋予我们的机器学习层来优化。这是一个单向的过程，每次我们改变了机器学习算法，那么我们都得重新优化底层的系统来适应。那么，我们提出了这样的问题，我们可不可以直接利用机器学习算法来优化底层的系统呢？如果我们能完成这样的工作，那么底层系统和机器学习算法就会变成一个双向的过程，变成了一个相辅相成的关系。
+  - ![current learning system](asserts/01-current-learning-systems.png)
+
+  - ![learning-based learning system](asserts/01-learning-based-learning-systems.png) 
+  
 - 现在的方案存在的困难
   - ![problem](asserts/01-existing-dl-frameworks-problem.png)
   - 上层框架中的算子是数据图数据，我们要在底层的GPU中对上层的算子，如二维卷积进行加速优化，这样才能加速上层模型的训练。每增加一个新的算子，我们都要在底层的GPU中实现一个对应的加速操作。然而，当我们希望泡在不同的硬件上，如开发板或者手机等边缘设备，我们需要对应的工程师进行对接新的加速实现。这是和等的麻烦啊。
   - ![limitation of existing approach](asserts/01-limitations-of-existing-approcach.png)
-  
-- Current System]
-  - 现时的做法是我们先优化底层的系统层，然后令系统层赋予我们的机器学习层来优化。这是一个单向的过程，每次我们改变了机器学习算法，那么我们都得重新优化底层的系统来适应。那么，我们提出了这样的问题，我们可不可以直接利用机器学习算法来优化底层的系统呢？如果我们能完成这样的工作，那么底层系统和机器学习算法就会变成一个双向的过程，变成了一个相辅相成的关系。
-  - ![current learning system](asserts/01-current-learning-systems.png)
-
-  - ![learning-based learning system](asserts/01-learning-based-learning-systems.png)
 
 ## 解决方案：TVM 
 - Why ?
