@@ -18,3 +18,10 @@
 
   - ![learning-based learning system](asserts/01-learning-based-learning-systems.png)
   
+## 分析现状
+- 现在的模型训练和模型部署的硬件之间存在非常大的gap。
+- ![deploy dl model everywhere](asserts/01-deploy-dl-model-everywhere.png)
+- 我们现在能做到的。
+- ![existing dl model ](asserts/01-existing-dl-framworks.png)
+
+  
