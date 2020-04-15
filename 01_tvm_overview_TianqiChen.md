@@ -25,11 +25,13 @@
   - ![limitation of existing approach](asserts/01-limitations-of-existing-approcach.png)
 
 ## 解决方案：TVM 
-- Why ?
-  - How to build intelligent systems with learning
-  - End-to-end learning-based learning system stack
 - Core idea, 能让计算机完成的任务绝不丢给人来做。
   - TVM是一个基于学习的学习系统，那它学习的是什么呢？它学习的就是上层框架和底层硬件之间的加速实现操作(一下蓝色部分)。
   - ![](asserts/01-tvm-lls-01.png)
   - ![](asserts/01-tvm-lls-03.png)
+- Why ?
+  - 它是智能化的，基于自动优化的机器学习理论
+  - 面向产品的，并且易用
+  - 全栈的，并且易拓展
+  - ![](asserts/01-why-tvm-01.png)
   
