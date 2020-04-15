@@ -6,7 +6,7 @@
 - For now, how I start to work on this problem ?
   - We need Machine Learning Reseacher, System Researcher and Computer Architect to work together.
   - ![key problems](asserts/key_problems.png)
-  - **It's so resource-comsuming!!! So we propose TVM **
+  - **It is so resource-comsuming!!! So we propose TVM**
   
 ## 分析现状  
 - 现在的模型训练和模型部署的硬件之间存在非常大的gap。
