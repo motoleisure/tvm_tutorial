@@ -59,4 +59,4 @@ tvm.datatype.register_op(
     'Add', 'llvm', 'bfloat')
 ```
 
-- 上面的程序注册了一个lowering函数，针对特定的算子(Add)，编译目标(LLVM)，数据类型(bfloat)。第一个参数是lowering函数。 这也可以是任何的函数，输入是TVM IR节点，返回一个新的TVM IR节点。在我们的case中，我们使用了一个helper函数来提供新框架(Bring Your Own Datatypes framework). 
+- 上面的程序注册了一个lowering函数，针对特定的算子(Add)，编译目标(LLVM)，数据类型(bfloat)。第一个参数是lowering函数。 这也可以是任何的函数，输入是TVM IR节点，返回一个新的TVM IR节点。在我们的case中，我们使用了一个helper函数来提供新框架(Bring Your Own Datatypes framework). tvm.datatype.create_lower_func('BFloat16Add')创建了一个lowering函数，就是上面提及的常规模式。结果函数转换了给定节点，变成uint16_t，然后再把节点本身转换成给定名称的调用函数。（这里是BFloat16Add）.
