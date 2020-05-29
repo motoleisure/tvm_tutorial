@@ -13,4 +13,31 @@
 ## Bring Your Own Datatypes
 - 新框架的目的是使得用户能够用自定义的数据类型来跑深度学习的工作负载。在新框架中，**“数据类型”**代表一个标量：譬如**float32或者uint8**。我们不处理其他复杂的数据格式，像**[block floating point](https://en.wikipedia.org/wiki/Block_floating_point)**或者Intel的[Flexpoint](https://arxiv.org/abs/1711.02213)。另外，我们只是支持这些标量数据类型的软件仿真版本，我们不支持直接在硬件上编译和运行自定义的数据类型。
 
-- TVM中每一个tensor都赋予一个类型编码，这个编码定义了在tensor中的标量的数据类型。 大多数的类型编码在TVM中都有硬编码的意义。
+- TVM中每一个tensor都赋予一个类型编码，这个编码定义了在tensor中的标量的数据类型。 大多数的类型编码在TVM中都有硬编码的意义，它映射到一个常用的数据类型，譬如**int**和**float**。 但是，大多数的类型编码都是未使用的。新框架运行用户声明这些未使用的类型编码，并且在runtime中加入新的数据类型。
+
+- 新框架是通过注册来实现的，和TVM的常用数据类型一样。有2中方法来让用户声明新的数据类型：第一个，**datatype registration**，第二个，**lowering function registration**。这些步骤分别是用来声明和实现新的数据类型。
+
+### Datatype Registration
+- 要注册新的数据类型，用户需要赋予新的数据类型一个名字和一个类型编码， 这个类型编码来自自定义数据类型中未使用的类型编码。
+``` python
+tvm.datatype.register('bfloat', 150)
+```
+- 上面的代码注册了**bfloat**的数据类型，类型编码是150。这个注册步骤允许TVM来解析自定义的数据类型。
+```python
+x = relay.var('x', shape=(3, ), dtype='float32')
+y = relay.var('y', shape=(3, ), dtype='float32')
+x_bfloat = relay.cast(x, dtype='custom[bfloat]16')
+y_bfloat = relay.cast(y, dtype='custom[bfloat]16')
+z_bfloat = x_bfloat + y_bfloat
+z = relay.cast(z_bfloat, dtype='float32')
+program = relay.Function([x, y], z)
+print(program)
+
+# v0.0.4
+# fn (%x: Tensor[(3), float32], %y: Tensor[(3), float32]) {
+#   %0 = cast(%x, dtype="custom[bfloat]16");
+#   %1 = cast(%y, dtype="custom[bfloat]16");
+#   %2 = add(%0, %1);
+#   cast(%2, dtype="float32")
+# }
+```
