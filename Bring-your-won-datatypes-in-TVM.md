@@ -60,3 +60,9 @@ tvm.datatype.register_op(
 ```
 
 - 上面的程序注册了一个lowering函数，针对特定的算子(Add)，编译目标(LLVM)，数据类型(bfloat)。第一个参数是lowering函数。 这也可以是任何的函数，输入是TVM IR节点，返回一个新的TVM IR节点。在我们的case中，我们使用了一个helper函数来提供新框架(Bring Your Own Datatypes framework). tvm.datatype.create_lower_func('BFloat16Add')创建了一个lowering函数，就是上面提及的常规模式。结果函数转换了给定节点，变成uint16_t，然后再把节点本身转换成给定名称的调用函数。（这里是BFloat16Add）.
+
+- 为了实现自定的数据类型，用户需要为他们想要运行的工作负载中的每一个算子操作注册一个lowering函数。譬如ResNet网络中大概有10中算子操作，包含Add, Div， 各种转换cast， 还有Max。在我们的测试中，注册一个数据类型和所有的lowering函数大概需要40行python代码。一旦所需的算在操作被注册了，自定义的数据类型工作负载就能像其他的TVM程序运行了。
+
+## Wrapping Up
+- 新框架(Bring Your Own Datatypes framwork)为TVM带来了用户定义的数据类型。我们希望这能激励数据类型研究者能在他们的研究中使用TVM,同样的，我们也希望能在深度学习社区中激发自定义数据类型的兴趣。新框架在TVM中只开发了一小部分，后面我们会加入更多的操作实现。敬请期待。
+
