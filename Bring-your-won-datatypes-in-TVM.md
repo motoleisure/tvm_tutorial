@@ -47,5 +47,16 @@ print(program)
 - 虽然TVM能解析上面的程序，但它并不能编译，因为TVM还没有理解该怎么编译上面定义的bfloat数据类型。为了编译这个程序，我们为新的数据类型注册了**lowering function**，这样能够帮助TVM转化新的数据类型，让TVM能够理解和编译的。
 
 - 通常，用户不希望直接在LLVM和CUDA中降低算子操作。反而，大多数的代码使用自定义数据类型比不用自定义数据类型的代码能够减低效能，利用一些小tricks。我们可以依赖原来的TVM去理解和编译代码。
+- ![lowering](asserts/lowering.png)
+- Figure 1: The expected result of a user's registered lowering function. A lowering function should convert a program using custom datatypes to a program which native TVM can understand and compile (in this case, a call to an external library, taking two uint16_ts).
 
+- 图1展示了常规模式。让我们假设我们想要探索bfloat类型，然后通过新框架插入bfloat仿真库到TVM来运行工作负载。我们的工作负载是一个简单2个bfloate输入相加的程序。Native TVM不理解如何实现bfloat的相加，但是他不需要这样做，因为我们已经实现了我们的数据类型的库。这个库包含了bfloat的相加的实现，还包括其他的算子，譬如相乘或者求平方根。要实现这个bfloat相加，我们只需要调用我们的库就可以了。所以，我们的**add**算法就是一个被调用的节点，调用一个函数（我们的库中叫**BFloat16Add**）。为了存储输入bfloat的bits到TVM能够理解的类型中，我们利用16-bits无符号的整数。最后的程序是TVM能够理解和编译的，它就是简单的调用了一个外部的库函数，输入2个无符号的整数。
 
+- 为了实现上面的lowering，我们为bfloat注册了一个lowering函数:
+```python
+tvm.datatype.register_op(
+    tvm.datatype.create_lower_func('BFloat16Add'),
+    'Add', 'llvm', 'bfloat')
+```
+
+- 上面的程序注册了一个lowering函数，针对特定的算子(Add)，编译目标(LLVM)，数据类型(bfloat)。第一个参数是lowering函数。 这也可以是任何的函数，输入是TVM IR节点，返回一个新的TVM IR节点。在我们的case中，我们使用了一个helper函数来提供新框架(Bring Your Own Datatypes framework). 
