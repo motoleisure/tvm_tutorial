@@ -41,3 +41,8 @@ print(program)
 #   cast(%2, dtype="float32")
 # }
 ```
+- 上面的程序代码把输入x和输出y从**float32**转换成了**bfloat**，把它们相加，然后再把结果转回**float32**。一旦注册了**bfloat**这个类型， TVM就能够同过语法custom[<typname>]解析特定的数据类型，其中typename就是已经定义的类型。这个语法同样也支持一般的<bits><lanes>的格式; 在这里，我们使用16来指名每一个bfloat都是16bits的定义范围的。lanes默认值是1。
+
+### Lowering Function Registration
+- 虽然TVM能解析上面的程序，但它并不能编译，因为TVM还没有理解该怎么编译上面定义的bfloat数据类型。
+
