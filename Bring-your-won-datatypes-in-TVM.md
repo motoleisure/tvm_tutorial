@@ -46,5 +46,6 @@ print(program)
 ### Lowering Function Registration
 - 虽然TVM能解析上面的程序，但它并不能编译，因为TVM还没有理解该怎么编译上面定义的bfloat数据类型。为了编译这个程序，我们为新的数据类型注册了**lowering function**，这样能够帮助TVM转化新的数据类型，让TVM能够理解和编译的。
 
-- 通常，用户不需要
+- 通常，用户不希望直接在LLVM和CUDA中降低算子操作。反而，大多数的代码使用自定义数据类型比不用自定义数据类型的代码能够减低效能，利用一些小tricks。我们可以依赖原来的TVM去理解和编译代码。
+
 
